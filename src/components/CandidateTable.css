@@ -1,0 +1,55 @@
+.table-container {
+  margin: 20px auto;
+  max-width: 80%;
+  background: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* Main table */
+.candidate-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+/* Header row */
+.candidate-table thead {
+  background: #f3f4f8;
+}
+
+.candidate-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Body cells */
+.candidate-table td {
+  padding: 10px 16px;
+  border-top: 1px solid #e5e7eb;
+  color: #444;
+}
+
+/* Hover effect */
+.table-row:hover {
+  background: #f9fafb;
+  transition: background 0.2s ease;
+}
+
+/* Skills column: prevent it from breaking the layout */
+.skills-cell {
+  max-width: 350px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Empty state */
+.empty-row {
+  text-align: center;
+  padding: 16px 0;
+  color: #777;
+}
