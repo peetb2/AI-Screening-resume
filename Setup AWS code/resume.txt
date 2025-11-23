@@ -1,0 +1,21 @@
+Rachata Pimsupsiri
+rachata@example.com
+
+Professional Summary
+I am a software developer with strong experience in Python, Java, JavaScript, and C++. I build cloud-native applications on AWS and have worked with services such as Lambda, S3, and API Gateway. I enjoy solving problems with Machine Learning and data analysis.
+
+Skills
+- Programming Languages: Python, Java, JavaScript, C++, SQL
+- Web Technologies: React, Node.js, REST APIs, HTML, CSS
+- Frameworks: Django, Express
+- Cloud: AWS (Lambda, S3, EC2, API Gateway)
+- Databases: MySQL, PostgreSQL
+
+Experience
+Software Developer Intern
+- Built a resume-screening application using React on the frontend and AWS Lambda on the backend.
+- Implemented REST APIs in Node.js and Python, integrating with SQL databases.
+- Optimized Machine Learning models for classification tasks.
+
+Education
+Bangkok University — Bachelor of Technology in Information Technology

@@ -1,0 +1,86 @@
+import json
+import boto3
+import re
+ 
+s3 = boto3.client('s3')
+ 
+# Define some example keywords to score resumes
+KEYWORDS = [
+    "Python", "AWS", "Java", "React", "Node.js",
+    "SQL", "C++", "Django", "Machine Learning", "JavaScript"
+]
+ 
+def extract_email(text):
+    match = re.search(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}", text)
+    return match.group() if match else "Not found"
+ 
+def extract_name(text):
+    lines = text.strip().split("\n")
+    return lines[0].strip() if lines else "Unknown"
+ 
+def lambda_handler(event, context):
+    # --- 1. Support both API Gateway + direct invoke ---
+    # If called via API Gateway, data is in event["body"]
+    if "body" in event and event["body"]:
+        try:
+            body = event["body"]
+            if isinstance(body, str):
+                body = json.loads(body)
+        except Exception:
+            body = {}
+    else:
+        # direct invoke from Lambda console with { "bucket": "...", "key": "..." }
+        body = event
+ 
+    bucket = body.get("bucket")
+    key = body.get("key")
+ 
+    if not bucket or not key:
+        return {
+            "statusCode": 400,
+            "headers": {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "Content-Type",
+                "Access-Control-Allow-Methods": "OPTIONS,POST"
+            },
+            "body": json.dumps({"error": "Bucket and key are required."})
+        }
+ 
+    try:
+        # --- 2. Read file from S3 ---
+        response = s3.get_object(Bucket=bucket, Key=key)
+        content = response["Body"].read().decode("utf-8")
+ 
+        name = extract_name(content)
+        email = extract_email(content)
+ 
+        # --- 3. Simple keyword matching ---
+        found_skills = [kw for kw in KEYWORDS if kw.lower() in content.lower()]
+        score = len(found_skills) * 10  # Each keyword = 10 points
+ 
+        return {
+            "statusCode": 200,
+            "headers": {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "Content-Type",
+                "Access-Control-Allow-Methods": "OPTIONS,POST"
+            },
+            "body": json.dumps({
+                "Name": name,
+                "Email": email,
+                "Skills": found_skills,
+                "Score": score
+            })
+        }
+ 
+    except Exception as e:
+        return {
+            "statusCode": 500,
+            "headers": {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "Content-Type",
+                "Access-Control-Allow-Methods": "OPTIONS,POST"
+            },
+            "body": json.dumps({"error": str(e)})
+        }
+ 

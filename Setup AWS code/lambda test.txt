@@ -1,0 +1,4 @@
+{
+    "bucket": "resume-screening-uploads-bu",
+    "key": "resume.txt"
+}
